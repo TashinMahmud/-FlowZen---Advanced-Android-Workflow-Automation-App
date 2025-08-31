@@ -11,7 +11,7 @@ import okhttp3.Request
 
 object TelegramSender {
     // Dedicated to geofencing; keep token here so we don't depend on other Telegram helpers.
-    private const val BOT_TOKEN = "8123513934:AAHybG4oY02mdAwcr8odWwjtD_X5eoOcpvA"
+    private const val BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

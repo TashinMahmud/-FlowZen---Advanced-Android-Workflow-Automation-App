@@ -23,7 +23,7 @@ class TelegramDeepLinkHelperWork(private val context: Context, private val workf
     fun getWorkflowId(): String = workflowId
     fun getChatIdKey(): String = KEY_CHAT_ID
     fun getUsernameKey(): String = KEY_USERNAME
-    private val BOT_TOKEN = "7911517639:AAGoNgXcG2IVTuQJP5agG0iSkcxWUzFmVww"
+    private val BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
     private val BOT_USERNAME = "flowzen_aibot"
     private val TELEGRAM_API = "https://api.telegram.org/bot"
     interface ConnectionCallback {

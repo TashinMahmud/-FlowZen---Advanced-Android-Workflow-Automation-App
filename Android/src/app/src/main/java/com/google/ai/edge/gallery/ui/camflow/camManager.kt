@@ -85,7 +85,7 @@ class CamflowImageManager(private val context: Context) {
     companion object {
         private const val MAX_IMAGES = 15
         private const val MAX_ANALYSIS_WORDS = 180
-        private const val TELEGRAM_BOT_TOKEN = "8123513934:AAHybG4oY02mdAwcr8odWwjtD_X5eoOcpvA"
+        private const val TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
         private const val SESSIONS_DIR = "camflow_sessions"
         private const val MAX_IMAGE_SIZE_KB = 1024
         private const val LAST_IMAGE_PREFS = "last_image_prefs"

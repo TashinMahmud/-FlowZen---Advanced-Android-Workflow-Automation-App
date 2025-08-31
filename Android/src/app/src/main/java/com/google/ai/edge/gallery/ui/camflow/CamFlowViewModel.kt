@@ -62,7 +62,7 @@ class CamFlowViewModel(
     private val context: Context,
     private val modelManagerViewModel: ModelManagerViewModel
 ) : ViewModel() {
-    private val BOT_TOKEN = "8123513934:AAHybG4oY02mdAwcr8odWwjtD_X5eoOcpvA"
+    private val BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
     private val BOT_USERNAME = "flow_aibot"
     private val camManager = CamflowImageManager(context)
     private val _uiState = MutableStateFlow(CamFlowUiState())

@@ -32,7 +32,7 @@ class TelegramHelper(private val context: Context) {
         private const val TAG = "TelegramHelper"
         private const val TELEGRAM_API_BASE_URL = "https://api.telegram.org/bot"
         // Added your bot token here
-        private const val DEFAULT_BOT_TOKEN = "8123513934:AAHybG4oY02mdAwcr8odWwjtD_X5eoOcpvA"
+        private const val DEFAULT_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
     }
 
     val httpClient = OkHttpClient.Builder()

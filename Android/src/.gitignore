@@ -98,6 +98,9 @@ Desktop.ini
 # Linux
 *~
 
+# Sensitive files - DO NOT commit to Git
+API_KEYS_AND_TOKENS.md
+
 # Temporary files
 *.tmp
 *.temp

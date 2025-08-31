@@ -68,7 +68,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDmGA-SPoZwttTbtIqM7eANyahs2RfCnVo" />
+            android:value="YOUR_GOOGLE_MAPS_API_KEY_HERE" />
 
         <!-- Gallery App MainActivity -->
         <activity

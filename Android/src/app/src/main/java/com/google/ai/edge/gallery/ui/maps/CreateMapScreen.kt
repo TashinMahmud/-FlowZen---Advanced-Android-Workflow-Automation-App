@@ -93,7 +93,7 @@ fun GeofenceMapScreen(
     val placesClient = remember {
         if (!Places.isInitialized()) {
             try {
-                Places.initialize(context, "AIzaSyDoCRItfgc8fXsR3HU2PZQP_Ype4aoDTxI")
+                Places.initialize(context, "YOUR_GOOGLE_PLACES_API_KEY_HERE")
                 Log.d("GeofenceMap", "Places API initialized successfully")
             } catch (e: Exception) {
                 Log.e("GeofenceMap", "Failed to initialize Places API", e)
@@ -126,7 +126,7 @@ fun GeofenceMapScreen(
     var tgConnecting by remember { mutableStateOf(false) }
 
     // Bot info
-    val botToken = "8123513934:AAHybG4oY02mdAwcr8odWwjtD_X5eoOcpvA"
+            val botToken = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
     val botUsername = "flow_aibot"
 
     // Geofence inputs
