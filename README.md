@@ -1,129 +1,114 @@
-# 🌀 FlowZen — Advanced Android Workflow Automation App
+# 🌀 FlowZen — On-Device AI Android Workflow Automation
 
-[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=android)](https://developer.android.com/jetpack/compose)
-[![TensorFlow Lite](https://img.shields.io/badge/TensorFlow%20Lite-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/lite)
-[![Room DB](https://img.shields.io/badge/Room%20DB-3DDC84?style=for-the-badge&logo=sqlite&logoColor=white)](https://developer.android.com/training/data-storage/room)
+<div align="center">
 
-A premium, production-ready, on-device AI-powered workflow automation and smart automation application built for the Android platform. **FlowZen** integrates multiple background processes, geofencing capabilities, real-time computer vision, local machine learning models, and messaging integrations to help users automate day-to-day tasks directly from their mobile device.
-
-* **On-Device LLM Integration**: Uses local 2B parameters model execution for privacy-first intent analysis.
-* **Complex Multi-Step Automations**: Runs background schedules with Google Maps, Gmail, and Telegram.
+[![Android SDK](https://img.shields.io/badge/Android-26%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#prerequisites)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.9-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Jetpack Compose](https://img.shields.io/badge/Compose-UI-4285F4?style=for-the-badge&logo=android)](#technical-architecture)
+[![TensorFlow Lite](https://img.shields.io/badge/TFLite-Edge_AI-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](#on-device-ai-engine)
+[![Download APK](https://img.shields.io/badge/Download-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/TashinMahmud/-FlowZen---Advanced-Android-Workflow-Automation-App/releases)
 
 ---
 
-## 🏗️ Architecture & Component Routing
+**FlowZen** is a premium, privacy-first Android application that automates complex local workflows on-device. By pairing local machine learning models (including a 2B parameter Large Language Model) with OS-level sensors and background execution layers, FlowZen converts natural language intents into automated tasks—without dispatching personal data to external clouds.
 
-FlowZen is engineered utilizing clean architecture principles adhering to the **MVVM (Model-View-ViewModel)** design pattern. It decouples UI layouts, state management, local storage, and background tasks.
+</div>
+
+## 🛠️ Technical Architecture
+
+FlowZen is structured around clean Architecture principles utilizing the **MVVM (Model-View-ViewModel)** design pattern. State flows reactively from Room databases and repositories through ViewModels to declarative Jetpack Compose UI trees.
 
 ```
-                      [ User Input / Intent ]
-                                 │
-                        [ Jetpack Compose UI ]
-                                 │
-                     [ ViewModels (MVVM Layer) ]
-                                 │
-                ┌────────────────┴────────────────┐
-                ▼                                 ▼
-      [ On-Device AI Engine ]           [ Repositories / Data Layer ]
-       (TensorFlow Lite / LLM)           ┌───────┼────────┬───────┐
-                                         │       │        │       │
-                                     [ Room ] [ Maps ] [ Gmail ] [ Telegram ]
++-------------------------------------------------------------+
+|                      JETPACK COMPOSE UI                     |
+|  [ AI Assistant ]   [ CamFlow ]   [ Maps/Geofence ]  ...   |
++------------------------------+------------------------------+
+                               | (UiState flow)
+                               v
++-------------------------------------------------------------+
+|                      VIEWMODELS (MVVM)                      |
+|   Exposes StateFlows and handles UI action triggers         |
++------------------------------+------------------------------+
+                               | (Data Operations)
+                               v
++-------------------------------------------------------------+
+|                     REPOSITORIES LAYER                      |
+|  [ DownloadRepository ]  [ DataStoreRepository ]            |
++--------------+-----------------------+----------------------+
+               |                       |
+               v                       v
++--------------+-------+       +-------+----------------------+
+|    ON-DEVICE AI      |       |     LOCAL DATA/SERVICES      |
+|  - TensorFlow Lite   |       |  - Jetpack WorkManager       |
+|  - Local 2B LLM      |       |  - Google Maps & Geofences   |
+|  - ML Kit (OCR/Face) |       |  - Gmail & Telegram API      |
++----------------------+       +------------------------------+
 ```
 
-### Component Architecture
-* **UI Layer**: Fully declarative screens, dynamically built using Jetpack Compose and structured navigation.
-* **Background Layer**: Managed via Android Jetpack WorkManager to execute robust tasks (e.g. Email summarization) with reliability across device reboots and low-battery states.
-* **On-Device AI Layer**: Runs TensorFlow Lite and local model files allowing low-latency processing without cloud-based API dependencies.
+### Core Code Modules & Responsibilities
+*   `data/` Layer:
+    *   [`Tasks.kt`](Android/app/src/main/java/com/google/ai/edge/gallery/data/Tasks.kt): Defs for available workflows, parsing rules, and task parameter mappings.
+    *   [`ModelAllowlist.kt`](Android/app/src/main/java/com/google/ai/edge/gallery/data/ModelAllowlist.kt): Dynamic loading configuration metadata mapping local/remote task models.
+    *   [`DownloadRepository.kt`](Android/app/src/main/java/com/google/ai/edge/gallery/data/DownloadRepository.kt): Handles multi-threaded file downloads and models checksum validation.
+*   `ui/` Components:
+    *   `aiassistant/`: Intent translator chat screen which converts natural speech phrases into background workflows.
+    *   `camflow/`: Real-time vision analysis view, running FaceNet-based clustering and ML Kit OCR.
+    *   `maps/`: Location-based geofence anchors configuration and historical mapping data feeds.
 
 ---
 
-## ⚡ Tech Stack & Core Libraries
+## ⚡ Core Integration Interfaces
 
-* **Language**: [Kotlin](https://kotlinlang.org/) — fully asynchronous programming model using Coroutines & StateFlow.
-* **UI Engine**: [Jetpack Compose](https://developer.android.com/jetpack/compose) — modern, declarative UI layout system.
-* **Local Persistence**: [Room DB](https://developer.android.com/training/data-storage/room) — reactive SQLite database layer.
-* **Background Tasks**: [Jetpack WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) — robust scheduler with execution constraints.
-* **Computer Vision & ML**: ML Kit, FaceNet for face recognition/clustering, and TensorFlow Lite for local classification.
-* **Integrations**: Google Sign-In, Gmail API for message synchronization, Google Maps SDK, and Telegram Bot API.
+<details>
+<summary><b>🤖 Telegram Deep Link & Notification Hub</b></summary>
 
----
+FlowZen coordinates notifications using the Telegram Bot API. It implements a deep-link handshaking script (`TelegramDeepLinkHelper.kt`) to resolve client `chat_id` keys securely without requiring manual developer portal values from players.
+*   **Workflow trigger**: Sends status summaries or image captures directly to your Telegram chat.
+</details>
 
-## 🌟 Key Features & Components
+<details>
+<summary><b>📧 Gmail API Summarizer Flow</b></summary>
 
-### 1. Intelligent AI Assistant
-An on-device chat interface utilizing a local LLM to interpret user intents in natural language. For example, telling the assistant *"Forward my urgent emails to Telegram every hour"* automatically generates, schedules, and registers the workflow in the background.
+The app uses Google Sign-In and local OAuth handles to read recent inbox headers, filters messages according to custom rules, translates content through the local NLP model, and triggers background forwards.
+</details>
 
-### 2. CamFlow (Real-time Vision Pipeline)
-A CameraX-based processing pipeline that runs computer vision models locally. Features:
-* **Face Identification & Clustering**: Utilizes FaceNet embedding comparisons to detect faces and group them into automatic smart albums.
-* **Dynamic OCR**: Google ML Kit-powered text recognition to extract document contents.
-* **Object Tagging & Barcodes**: Instantly categorizes camera feeds and scans barcodes/QRs for fast data extraction.
+<details>
+<summary><b>📂 On-Device AI Models & Allowlist</b></summary>
 
-### 3. Maps & Geofencing Automation
-Integrates Google Maps to let users specify physical geofences. The app tracks entry and exit transitions, automatically dispatching webhook notifications, Telegram alerts, or custom Gmail logs.
-
-### 4. Background Summarizer
-A background automation service that pulls emails from a Gmail inbox under user authorization, uses local NLP summarization pipelines to condense them, and forwards the results to designated Telegram accounts or email addresses.
+Dynamic inference models are managed via `model_allowlist.json`. The application validates models locally before load:
+*   **FaceNet Classifier**: Generates 128-dimensional embedding vectors for real-time face matching and grouping.
+*   **Edge LLM**: Local model engine executing reasoning directly inside the Android Sandbox environment.
+</details>
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Getting Started
 
-### 1. Prerequisites
-Ensure you have the following configurations set up:
-* Android Studio (Ladybug or newer recommended)
-* Android SDK 26+ (Android 8.0+)
-* A physical Android device (recommended for camera and geofencing testing)
-* Google Play Services configured on the device
+### 1. Requirements
+*   Android Studio Ladybug or newer
+*   Android SDK 26+ (API Level 26 or above)
+*   Physical Android device configured with Google Play Services (required for Maps and Geofencing coordinates)
 
-### 2. Configuration Setup
-Create a `local.properties` file in the root directory and add your Google Maps SDK key:
+### 2. Configurations Setup
+Create a `local.properties` file in your `Android/` project root:
 ```properties
 MAPS_API_KEY=your_google_maps_sdk_key_here
 ```
 
-Configure Telegram Bot credentials inside the respective helper classes:
-* `TelegramDeepLinkHelperWork.kt`
-* `TelegramDeepLinkHelper.kt`
+Configure your Telegram Bot token inside the helper configurations:
+-   `TelegramDeepLinkHelperWork.kt`
+-   `TelegramDeepLinkHelper.kt`
 
-### 3. Build & Run
-Compile and deploy the debug APK via Gradle:
+### 3. Compilation
+Build the production-ready Release APK via the Gradle CLI:
 ```bash
-# Clean project
-./gradlew clean
-
-# Build debug APK
-./gradlew assembleDebug
+cd Android/
+./gradlew assembleRelease
 ```
-
----
-
-## 🧭 Project Directory Layout
-
-```
-app/src/main/java/com/google/ai/edge/gallery/
-├── data/                    # Data models, DB Entities, Room DAOs
-├── ui/                      # Jetpack Compose Screens and UI Component files
-│   ├── aiassistant/         # AI Chat Screen & Local LLM Helpers
-│   ├── camflow/             # Vision Pipeline UI & Camera ViewModels
-│   ├── maps/                # Google Maps integration and Geofencing UI
-│   ├── workflow/            # Active automations and Scheduling view list
-│   ├── modelmanager/        # Model configuration download & allowlist UI
-│   └── navigation/          # Type-safe routing controls
-├── services/                # Background WorkflowExecutionService & WorkManager classes
-└── utils/                   # TensorFlow Lite utilities, ML Kit wrappers, OCR utils
-```
-
----
-
-## 📝 Configuration Allowlist
-
-The application manages local models dynamically through `model_allowlist.json` located in the main asset directory. Models can be downloaded from external edges or loaded locally based on user configuration requirements.
+The compiled APK will be output to: `Android/app/build/outputs/apk/release/app-release.apk`.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for complete details.
+Licensed under the [Apache License 2.0](LICENSE).
